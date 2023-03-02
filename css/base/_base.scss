@@ -1,0 +1,16 @@
+@charset "UTF-8";
+// 共用變數與函數
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');  // -思源黑體
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200;300;400;500;600;700;900&display=swap');  // -思源宋體
+
+
+
+/* Font */
+$font-family-base: 'Noto Sans TC','PingFangTC', 'Heiti TC', 'Microsoft JhengHei', 'Noto Sans Myanmar','Arial', 'sans-serif';
+
+body,
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: $font-family-base;
+}
+

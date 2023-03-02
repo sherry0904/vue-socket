@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="format-detection" content="telephone=no">
+
+  <title>網頁title</title>
+
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" sizes="32x32" />
+  <link rel="image_src" href="images/share.jpg" />
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="" />
+  <meta property="og:image" content="images/share.jpg" />
+  <meta property="og:description" content="" />
+
+  <link href="css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/all.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+</head>
+
+<body>
+
+  <div id="app">
+    <ul>
+      <li v-for="m in messages">
+        <h4 style="font-size: 16px;">{{m.message}} <span style="font-size: 12px;">-- {{m.name}}</span></h4>
+      </li>
+      <input type="text" v-model="temp.message" placeholder="訊息">
+      <input type="text" v-model="temp.name" placeholder="你是誰？">
+      <button @click="sendMessage">送出</button>
+    </ul>
+  </div>
+
+  <script src="lib/jquery-3.5.1.min.js"></script>
+  <script src="lib/vue/vue.min.js"></script>
+  <!-- <script src="lib/vue/axios.min.js"></script>
+  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="lib/swiper.min.js"></script>
+  <script src="lib/cookie.js"></script>
+  <script src="lib/gsap.min.js"></script> -->
+
+  <!-- <script src="js/ga.js"></script> -->
+  <script src="js/main.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/vconsole@3.2.0/dist/vconsole.min.js"></script>
+
+  <script>
+    // init vConsole
+    // var vConsole = new VConsole();
+    // console.log('Hello world');
+  </script>
+
+<script>
+
+  const vm = new Vue({
+    el: "#app",
+    data: {
+      messages: [],
+      temp: {},
+      socket: null
+    },
+    mounted() {
+      this.socket = socket = io("http://localhost:4040", { transports: ['websocket', 'polling', 'flashsocket'] })
+
+      this.socket.on("allMessage", obj => {
+        console.log("recieved all message")
+        this.messages = obj;
+      })
+
+      this.socket.on("newMessage", obj => {
+        console.log("recieved new message");
+        this.messages.push(obj);
+      })
+    },
+    methods: {
+      sendMessage(){
+        console.log('sending new message');
+        this.socket.emit("sendMessage", this.temp);
+        console.log(this.temp);
+        this.temp.message = "";
+      }
+    },
+    updated() {
+      console.log(this.messages)
+    },
+  });
+
+
+  // // 建立與 server 的連線
+  // const socket = io("http://localhost:4040", { transports: ['websocket', 'polling', 'flashsocket'] })
+  // // 發送一個 "sendMessage" 事件
+  // socket.emit("sendMessage", {
+  //   name: "majer",
+  //   message: "hello everyone"
+  // })
+  // // 監聽來自 server 的 "allMessage" 事件
+  // socket.on("allMessage", function(message){
+  //   console.log('received all messages')
+  //   console.log(message)
+  // })
+  
+</script>
+  
+
+</body>
+
+</html>
